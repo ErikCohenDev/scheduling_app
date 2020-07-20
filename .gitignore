@@ -1,8 +1,12 @@
 # Mac OSX
 .DS_Store
 
-#Intellij
-.idea
+# Secrets
+**/resources/secrets.properties
+
+# Intellij
+.idea/workspace.xml
+.idea/tasks.xml
 out
 
 # Compiled class file

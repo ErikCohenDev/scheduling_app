@@ -1,4 +1,13 @@
 package main.controller;
 
-public class AppointmentAdd {
+import javafx.fxml.Initializable;
+
+import java.net.URL;
+import java.util.ResourceBundle;
+
+public class AppointmentAdd implements Initializable {
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+
+    }
 }
