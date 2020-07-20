@@ -1,4 +1,4 @@
-package main.utils;
+package main.model;
 
 public class ActivityLog {
 }

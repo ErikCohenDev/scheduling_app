@@ -1,14 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="main.controller.Appointment"
-            prefHeight="500" prefWidth="1000">
 
+<AnchorPane prefHeight="500" prefWidth="1000" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.controller.Appointment">
+   <children>
+      <Button layoutY="1.0" mnemonicParsing="false" onAction="#goBack" text="Back" />
+      <TableView layoutY="28.0" prefHeight="416.0" prefWidth="1000.0">
+        <columns>
+          <TableColumn prefWidth="37.0" text="ID" />
+          <TableColumn prefWidth="86.0" text="Title" />
+            <TableColumn prefWidth="119.0" text="Description" />
+            <TableColumn minWidth="0.0" prefWidth="126.0" text="Location" />
+            <TableColumn prefWidth="102.0" text="Contact" />
+            <TableColumn minWidth="0.0" prefWidth="107.0" text="Type" />
+            <TableColumn prefWidth="159.0" text="URL" />
+            <TableColumn prefWidth="127.0" text="Start" />
+            <TableColumn prefWidth="136.0" text="End" />
+        </columns>
+      </TableView>
+      <Button layoutX="14.0" layoutY="447.0" mnemonicParsing="false" prefHeight="39.0" prefWidth="185.0" text="Add" />
+   </children>
 </AnchorPane>
