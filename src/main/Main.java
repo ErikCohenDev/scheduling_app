@@ -8,8 +8,8 @@ import javafx.stage.Stage;
 import main.controller.AppointmentModify;
 import main.controller.CustomerModify;
 import main.db.DBInstance;
-import main.model.Appointment;
-import main.model.Customer;
+import main.model.AppointmentModel;
+import main.model.CustomerModel;
 import main.model.LocaleInstance;
 
 public class Main extends Application {
@@ -46,7 +46,7 @@ public class Main extends Application {
         mainStage.setScene(scene);
     }
 
-    public static void goToAppointmentModify(Appointment appointment) throws Exception {
+    public static void goToAppointmentModify(AppointmentModel appointment) throws Exception {
         FXMLLoader loader = new FXMLLoader(Main.class.getResource("view/AppointmentModify.fxml"));
         final Scene scene = new Scene(loader.load());
         AppointmentModify controller = loader.getController();
@@ -64,7 +64,7 @@ public class Main extends Application {
         mainStage.setScene(scene);
     }
 
-    public static void goToCustomerModify(Customer customer) throws Exception {
+    public static void goToCustomerModify(CustomerModel customer) throws Exception {
         FXMLLoader loader = new FXMLLoader(Main.class.getResource("view/CustomerModify.fxml"));
         final Scene scene = new Scene(loader.load());
         CustomerModify controller = loader.getController();

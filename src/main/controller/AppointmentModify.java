@@ -1,8 +1,7 @@
 package main.controller;
 
 import javafx.fxml.Initializable;
-import main.model.Appointment;
-import main.model.Customer;
+import main.model.AppointmentModel;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -13,6 +12,6 @@ public class AppointmentModify implements Initializable {
 
     }
 
-    public void initData(Appointment appointment) {
+    public void initData(AppointmentModel appointment) {
     }
 }
