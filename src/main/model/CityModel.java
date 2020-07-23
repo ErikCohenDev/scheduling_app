@@ -1,10 +1,10 @@
 package main.model;
 
-public class Country {
+public class CityModel {
     private int id;
     private String name;
 
-    Country(int id, String name) {
+    public CityModel(int id, String name) {
         this.id = id;
         this.name = name;
     }

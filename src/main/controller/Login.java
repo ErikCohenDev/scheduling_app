@@ -10,7 +10,7 @@ import javafx.scene.control.TextField;
 import main.Main;
 import main.db.Authenticate;
 import main.model.LocaleInstance;
-import main.model.User;
+import main.model.UserModel;
 
 import java.net.URL;
 import java.util.Properties;
@@ -41,7 +41,7 @@ public class Login implements Initializable {
     public void login(final ActionEvent event) throws Exception {
         String username = username_input.getText();
         String password = password_input.getText();
-        User loggedInUser = Authenticate.login(username, password);
+        UserModel loggedInUser = Authenticate.login(username, password);
         if (loggedInUser != null) {
             Main.goToDashboard();
         } else {

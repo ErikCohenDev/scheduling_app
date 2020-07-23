@@ -16,7 +16,7 @@ public class Dashboard implements Initializable {
     }
 
     public void goToAppointmentView() throws Exception {
-        Main.goToCustomer();
+        Main.goToAppointment();
     }
 
     public void gotToReportView() throws Exception {
