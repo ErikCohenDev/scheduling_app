@@ -10,4 +10,16 @@ public class UserModel {
         this.username = username;
         this.active = active;
     }
+
+    public int getId() {
+        return id;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
 }

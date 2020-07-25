@@ -9,6 +9,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import main.Main;
 import main.db.DBInstance;
+import main.db.Store;
 import main.model.AppointmentModel;
 
 import java.net.URL;
@@ -40,8 +41,7 @@ public class Appointment implements Initializable {
  
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        List<AppointmentModel> appointments = DBInstance.getInstance().getAllAppointments();
-        ObservableList<AppointmentModel> observableAppointments = FXCollections.observableArrayList(appointments);
+        ObservableList<AppointmentModel> observableAppointments = FXCollections.observableArrayList(Store.getAppointments());
         this.appointmentTable.setItems(observableAppointments);
         this.appointmentIdCol.setCellValueFactory(new PropertyValueFactory("id"));
         this.appointmentTitleCol.setCellValueFactory(new PropertyValueFactory("title"));

@@ -1,5 +1,9 @@
 package main.model;
 
+import main.db.Store;
+
+import java.util.Optional;
+
 public class AddressModel {
     private int id;
     private String name;
@@ -15,5 +19,51 @@ public class AddressModel {
         this.cityId = cityId;
         this.postalCode = postalCode;
         this.phone = phone;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getName2() {
+        return name2;
+    }
+
+    public int getCityId() {
+        return cityId;
+    }
+
+    public String getPostalCode() {
+        return postalCode;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    private Optional<CityModel> getCityRefById(int cityId) {
+        return Store.getCities().stream()
+                .filter(city -> city.getId() == cityId)
+                .findFirst();
+    }
+
+    public String getCity() {
+        Optional<CityModel> cityRef = getCityRefById(cityId);
+        if (cityRef.isPresent()) {
+            return cityRef.get().getName();
+        }
+        return null;
+    }
+
+    public String getCountry() {
+        Optional<CityModel> cityRef = getCityRefById(cityId);
+        if (cityRef.isPresent()) {
+            return cityRef.get().getCountryName();
+        }
+        return null;
     }
 }
