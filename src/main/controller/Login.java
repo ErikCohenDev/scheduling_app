@@ -9,6 +9,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import main.Main;
 import main.db.Authenticate;
+import main.db.Store;
 import main.model.LocaleInstance;
 import main.model.UserModel;
 
@@ -43,6 +44,7 @@ public class Login implements Initializable {
         String password = password_input.getText();
         UserModel loggedInUser = Authenticate.login(username, password);
         if (loggedInUser != null) {
+            Store.init();
             Main.goToDashboard();
         } else {
             Alert alert = new Alert(Alert.AlertType.ERROR, String.valueOf(dictionary.get("login_error")));

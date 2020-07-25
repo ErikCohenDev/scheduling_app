@@ -40,7 +40,7 @@ public class DBInstance {
         try {
             Class.forName(dbSecrets.getProperty("JDBC_DRIVER"));
             conn = DriverManager.getConnection(
-                    dbSecrets.getProperty("DB_URL"),
+                    dbSecrets.getProperty("DB_URL") + "?autoReconnect=true&useSSL=false",
                     dbSecrets.getProperty("DB_USER"),
                     dbSecrets.getProperty("DB_PASS")
             );
@@ -163,7 +163,8 @@ public class DBInstance {
                 System.out.println(city);
                 cities.add(new CityModel(
                         Integer.parseInt(city.get("cityId").toString()),
-                        city.get("city").toString()
+                        city.get("city").toString(),
+                        Integer.parseInt(city.get("countryId").toString())
                     )
                 );
             }

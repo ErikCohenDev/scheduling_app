@@ -1,14 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="main.controller.CustomerAdd"
-            prefHeight="500" prefWidth="1000">
 
+<AnchorPane prefHeight="500" prefWidth="1000" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.controller.CustomerAdd">
+   <children>
+      <Button layoutX="451.0" layoutY="440.0" mnemonicParsing="false" prefHeight="37.0" prefWidth="138.0" text="Cancel" />
+      <Button layoutX="451.0" layoutY="378.0" mnemonicParsing="false" prefHeight="37.0" prefWidth="138.0" text="Update" />
+      <TextField layoutX="201.0" layoutY="64.0" prefHeight="27.0" prefWidth="270.0" />
+      <Label layoutX="201.0" layoutY="47.0" prefHeight="17.0" prefWidth="69.0" text="Name" />
+      <TextField layoutX="529.0" layoutY="64.0" prefHeight="27.0" prefWidth="270.0" />
+      <Label layoutX="529.0" layoutY="47.0" prefHeight="17.0" prefWidth="69.0" text="Phone" />
+      <TextField layoutX="201.0" layoutY="129.0" prefHeight="27.0" prefWidth="598.0" />
+      <Label layoutX="201.0" layoutY="112.0" prefHeight="17.0" prefWidth="69.0" text="Address" />
+      <TextField layoutX="201.0" layoutY="194.0" prefHeight="27.0" prefWidth="598.0" />
+      <Label layoutX="201.0" layoutY="177.0" prefHeight="17.0" prefWidth="69.0" text="Address2" />
+      <TextField layoutX="201.0" layoutY="252.0" prefHeight="27.0" prefWidth="270.0" />
+      <Label layoutX="201.0" layoutY="235.0" prefHeight="17.0" prefWidth="69.0" text="City" />
+      <TextField layoutX="529.0" layoutY="252.0" prefHeight="27.0" prefWidth="270.0" />
+      <Label layoutX="529.0" layoutY="235.0" prefHeight="17.0" prefWidth="69.0" text="Zip" />
+      <TextField layoutX="529.0" layoutY="322.0" prefHeight="27.0" prefWidth="270.0" />
+      <Label layoutX="529.0" layoutY="305.0" prefHeight="17.0" prefWidth="69.0" text="Country" />
+      <Button layoutX="14.0" layoutY="14.0" mnemonicParsing="false" prefHeight="17.0" prefWidth="87.0" text="Back" />
+   </children>
 </AnchorPane>
