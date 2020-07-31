@@ -36,6 +36,7 @@ public class Customer implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        Store.getCustomers();
         ObservableList<CustomerModel> observableCustomers = FXCollections.observableArrayList(Store.getCustomers());
         this.customerTable.setItems(observableCustomers);
         this.customerIdCol.setCellValueFactory(new PropertyValueFactory("id"));
