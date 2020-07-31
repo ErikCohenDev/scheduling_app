@@ -17,8 +17,8 @@ public abstract class Authenticate {
         return null;
     }
 
-    private static HashMap<String, String> getUserInfo(String userName) {
-        return DBInstance.getInstance().getUserByUserName(userName);
+    private static HashMap getUserInfo(String userName) {
+        return DBUser.getUserByUserName(userName);
     }
 
     public static void logout() {

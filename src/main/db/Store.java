@@ -31,11 +31,18 @@ public class Store {
         return countries;
     }
 
+    public static void refreshCustomer() {
+        countries = DBCountry.getAll();
+        cities = DBCity.getAll();
+        addresses = DBAddress.getAll();
+        customers = DBCustomer.getAll();
+    }
+
     public static void init() {
-        customers = DBInstance.getInstance().getAllCustomers();
-        addresses = DBInstance.getInstance().getAllAddresses();
-        cities = DBInstance.getInstance().getAllCities();
-        countries = DBInstance.getInstance().getAllCountries();
-        appointments = DBInstance.getInstance().getAllAppointments();
+        customers = DBCustomer.getAll();
+        addresses = DBAddress.getAll();
+        cities = DBCity.getAll();
+        countries = DBCountry.getAll();
+        appointments = DBAppointment.getAll();
     }
 }
