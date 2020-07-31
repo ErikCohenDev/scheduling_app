@@ -39,10 +39,10 @@ public class Store {
     }
 
     public static void init() {
-        customers = DBCustomer.getAll();
-        addresses = DBAddress.getAll();
-        cities = DBCity.getAll();
         countries = DBCountry.getAll();
+        cities = DBCity.getAll();
+        addresses = DBAddress.getAll();
+        customers = DBCustomer.getAll();
         appointments = DBAppointment.getAll();
     }
 }

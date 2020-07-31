@@ -19,11 +19,12 @@ abstract public class DBCustomer {
             System.out.println("Customers: ");
             for (HashMap customer: customersHash) {
                 System.out.println(customer);
+                int addressId = Integer.parseInt(customer.get("addressId").toString());
                 customers.add(new CustomerModel(
                                 Integer.parseInt(customer.get("customerId").toString()),
                                 customer.get("customerName").toString(),
-                                Integer.parseInt(customer.get("addressId").toString()),
-                                customer.get("active").equals("true")
+                                Store.getAddresses().stream().filter(address -> address.getId() == addressId).findFirst().get(),
+                                customer.get("active").equals(true)
                         )
                 );
             }
@@ -42,7 +43,7 @@ abstract public class DBCustomer {
                 addressId +"', '" +
                 active +"', '" +
                 currentDateTime +"', '" +
-                currentDateTime +"', '" +
+                user +"', '" +
                 user +"');";
         System.out.println("executing query: " + insertStatement);
         int affectedRows = stmt.executeUpdate(insertStatement, Statement.RETURN_GENERATED_KEYS);
@@ -57,5 +58,14 @@ abstract public class DBCustomer {
                 throw new SQLException("Creating address failed, no ID obtained.");
             }
         }
+    }
+
+    public static void delete(CustomerModel customer) throws SQLException {
+        Connection conn = DBInstance.getInstance().getConnection();
+        Statement stmt = conn.createStatement();
+        String deleteStatement = "DELETE FROM customer WHERE customerId = " + customer.getId() + ";";
+        System.out.println("executing query: " + deleteStatement);
+        stmt.executeUpdate(deleteStatement);
+        DBAddress.delete(customer.getAddress());
     }
 }

@@ -4,10 +4,12 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import main.Main;
+import main.db.DBCustomer;
 import main.db.Store;
 import main.model.*;
 
@@ -42,15 +44,36 @@ public class Customer implements Initializable {
         this.customerIdCol.setCellValueFactory(new PropertyValueFactory("id"));
         this.customerNameCol.setCellValueFactory(new PropertyValueFactory("name"));
         this.customerPhoneCol.setCellValueFactory(new PropertyValueFactory("phone"));
-        this.customerAddressCol.setCellValueFactory(new PropertyValueFactory("address"));
+        this.customerAddressCol.setCellValueFactory(new PropertyValueFactory("addressName"));
         this.customerAddress2Col.setCellValueFactory(new PropertyValueFactory("address2"));
-        this.customerCityCol.setCellValueFactory(new PropertyValueFactory("city"));
+        this.customerCityCol.setCellValueFactory(new PropertyValueFactory("cityName"));
         this.customerZipCol.setCellValueFactory(new PropertyValueFactory("zip"));
-        this.customerCountryCol.setCellValueFactory(new PropertyValueFactory("country"));
+        this.customerCountryCol.setCellValueFactory(new PropertyValueFactory("countryName"));
     }
 
     public void add() throws Exception {
         Main.goToCustomerAdd();
+    }
+
+    public void update() throws Exception {
+        final CustomerModel selectedCustomer = customerTable.getSelectionModel().getSelectedItem();
+        if (selectedCustomer == null) {
+            Alert alert = new Alert(Alert.AlertType.ERROR, String.valueOf("Please Select a Customer"));
+            alert.show();
+            return;
+        }
+        Main.goToCustomerModify(selectedCustomer);
+    }
+
+    public void delete() throws Exception {
+        final CustomerModel selectedCustomer = customerTable.getSelectionModel().getSelectedItem();
+        if (selectedCustomer == null) {
+            Alert alert = new Alert(Alert.AlertType.ERROR, String.valueOf("Please Select a Customer"));
+            alert.show();
+            return;
+        }
+        DBCustomer.delete(selectedCustomer);
+        initialize(null, null);
     }
 
     public void goBack() throws Exception {

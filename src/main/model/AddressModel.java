@@ -8,15 +8,15 @@ public class AddressModel {
     private int id;
     private String name;
     private String name2;
-    private int cityId;
+    private CityModel city;
     private String postalCode;
     private String phone;
 
-    public AddressModel(int id, String name, String name2, int cityId, String postalCode, String phone) {
+    public AddressModel(int id, String name, String name2, CityModel city, String postalCode, String phone) {
         this.id = id;
         this.name = name;
         this.name2 = name2;
-        this.cityId = cityId;
+        this.city = city;
         this.postalCode = postalCode;
         this.phone = phone;
     }
@@ -33,8 +33,8 @@ public class AddressModel {
         return name2;
     }
 
-    public int getCityId() {
-        return cityId;
+    public CityModel city() {
+        return city;
     }
 
     public String getPostalCode() {
@@ -51,19 +51,11 @@ public class AddressModel {
                 .findFirst();
     }
 
-    public String getCity() {
-        Optional<CityModel> cityRef = getCityRefById(cityId);
-        if (cityRef.isPresent()) {
-            return cityRef.get().getName();
-        }
-        return null;
+    public CityModel getCity() {
+        return city;
     }
 
-    public String getCountry() {
-        Optional<CityModel> cityRef = getCityRefById(cityId);
-        if (cityRef.isPresent()) {
-            return cityRef.get().getCountryName();
-        }
-        return null;
+    public CountryModel getCountry() {
+        return city.getCountry();
     }
 }

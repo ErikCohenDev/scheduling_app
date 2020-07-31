@@ -70,17 +70,12 @@ abstract public class DBCountry {
         }
     }
 
-    public static void deleteById(int id) throws SQLException {
+    public static void delete(CountryModel country) throws SQLException {
         Connection conn = DBInstance.getInstance().getConnection();
         Statement stmt = conn.createStatement();
-        String deleteStatement = "DELETE FROM country WHERE countryId = " + id + ";";
+        String deleteStatement = "DELETE FROM country WHERE countryId = " + country.getId() + ";";
         System.out.println("executing query: " + deleteStatement);
         stmt.executeUpdate(deleteStatement);
-
-        if (stmt.getUpdateCount() > 0) {
-            System.out.println(stmt.getUpdateCount() + " rows deleted");
-        } else {
-            System.out.println("No change!");
-        }
+        Store.refreshCustomer();
     }
 }
