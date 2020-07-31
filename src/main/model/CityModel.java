@@ -1,18 +1,14 @@
 package main.model;
 
-import main.db.Store;
-
-import java.util.Optional;
-
 public class CityModel {
     private int id;
     private String name;
-    private int countryId;
+    private CountryModel country;
 
-    public CityModel(int id, String name, int countryId) {
+    public CityModel(int id, String name, CountryModel country) {
         this.id = id;
         this.name = name;
-        this.countryId = countryId;
+        this.country = country;
     }
 
     public int getId() {
@@ -23,17 +19,7 @@ public class CityModel {
         return name;
     }
 
-    private Optional<CountryModel> getCountryRefById(int countryId) {
-        return Store.getCountries().stream()
-                .filter(country -> country.getId() == countryId)
-                .findFirst();
-    }
-
-    public String getCountryName() {
-        Optional<CountryModel> countryRef = getCountryRefById(this.countryId);
-        if (countryRef.isPresent()) {
-            return countryRef.get().getName();
-        }
-        return null;
+    public CountryModel getCountry() {
+        return this.country;
     }
 }

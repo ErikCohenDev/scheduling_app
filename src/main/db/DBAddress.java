@@ -1,6 +1,7 @@
 package main.db;
 
 import main.model.AddressModel;
+import main.model.CityModel;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -19,11 +20,12 @@ abstract public class DBAddress {
             System.out.println("Addresses: ");
             for (HashMap address: addressesHash) {
                 System.out.println(address);
+                int cityId = Integer.parseInt(address.get("cityId").toString());
                 addresses.add(new AddressModel(
                                 Integer.parseInt(address.get("addressId").toString()),
                                 address.get("address").toString(),
                                 address.get("address2").toString(),
-                                Integer.parseInt(address.get("cityId").toString()),
+                                Store.getCities().stream().filter(city -> city.getId() == cityId).findFirst().get(),
                                 address.get("postalCode").toString(),
                                 address.get("phone").toString()
                         )
@@ -46,7 +48,7 @@ abstract public class DBAddress {
                 zip +"', '" +
                 phone +"', '" +
                 currentDateTime +"', '" +
-                currentDateTime +"', '" +
+                user +"', '" +
                 user +"');";
         System.out.println("executing query: " + insertStatement);
         int affectedRows = stmt.executeUpdate(insertStatement, Statement.RETURN_GENERATED_KEYS);
@@ -61,5 +63,14 @@ abstract public class DBAddress {
                 throw new SQLException("Creating address failed, no ID obtained.");
             }
         }
+    }
+
+    public static void delete(AddressModel address) throws SQLException {
+        Connection conn = DBInstance.getInstance().getConnection();
+        Statement stmt = conn.createStatement();
+        String deleteStatement = "DELETE FROM address WHERE addressId = " + address.getId() + ";";
+        System.out.println("executing query: " + deleteStatement);
+        stmt.executeUpdate(deleteStatement);
+        DBCity.delete(address.getCity());
     }
 }

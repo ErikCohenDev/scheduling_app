@@ -1,19 +1,15 @@
 package main.model;
 
-import main.db.Store;
-
-import java.util.Optional;
-
 public class CustomerModel {
     private int id;
     private String name;
-    private int addressId;
+    private AddressModel address;
     private boolean active;
 
-    public CustomerModel(int id, String name, int addressId, boolean active) {
+    public CustomerModel(int id, String name, AddressModel address, boolean active) {
         this.id = id;
         this.name = name;
-        this.addressId = addressId;
+        this.address = address;
         this.active = active;
     }
 
@@ -21,65 +17,47 @@ public class CustomerModel {
         return id;
     }
 
+    public String getAddressName() {
+        return address.getName();
+    }
+
+    public String getPhone() {
+        return address.getPhone();
+    }
+
+    public String getAddress2() {
+        return address.getName2();
+    }
+
+    public String getZip() {
+        return address.getPostalCode();
+    }
+
+    public String getCityName() {
+        return address.getCity().getName();
+    }
+
+    public String getCountryName() {
+        return address.getCountry().getName();
+    }
+
     public String getName() {
         return name;
     }
 
-    private Optional<AddressModel> getAddressRefById(int addressId) {
-        return Store.getAddresses().stream()
-                .filter(address -> address.getId() == addressId)
-                .findFirst();
+    public AddressModel getAddress() {
+        return address;
     }
 
-    public String getPhone() {
-        Optional<AddressModel> addressRef = getAddressRefById(this.addressId);
-        if (addressRef.isPresent()) {
-            return addressRef.get().getPhone();
-        }
-        return null;
+    public CityModel getCity() {
+        return address.getCity();
     }
 
-    public String getAddress() {
-        Optional<AddressModel> addressRef = getAddressRefById(this.addressId);
-        if (addressRef.isPresent()) {
-            return addressRef.get().getName();
-        }
-        return null;
+    public CountryModel getCountry() {
+        return address.getCountry();
     }
 
-    public String getAddress2() {
-        Optional<AddressModel> addressRef = getAddressRefById(this.addressId);
-        if (addressRef.isPresent()) {
-            return addressRef.get().getName2();
-        }
-        return null;
-    }
-
-    public String getCity() {
-        Optional<AddressModel> addressRef = getAddressRefById(this.addressId);
-        if (addressRef.isPresent()) {
-            return addressRef.get().getCity();
-        }
-        return null;
-    }
-
-    public String getZip() {
-        Optional<AddressModel> addressRef = getAddressRefById(this.addressId);
-        if (addressRef.isPresent()) {
-            return addressRef.get().getPostalCode();
-        }
-        return null;
-    }
-
-    public String getCountry() {
-        Optional<AddressModel> addressRef = getAddressRefById(this.addressId);
-        if (addressRef.isPresent()) {
-            return addressRef.get().getCountry();
-        }
-        return null;
-    }
-
-    public boolean isActive() {
+    public boolean getActive() {
         return active;
     }
 }

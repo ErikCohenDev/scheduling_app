@@ -1,6 +1,7 @@
 package main.db;
 
 import main.model.CityModel;
+import main.model.CountryModel;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -16,11 +17,12 @@ abstract public class DBCity {
             System.out.println("Cities: ");
             for (HashMap city: citiesHash) {
                 System.out.println(city);
+                int countryId = Integer.parseInt(city.get("countryId").toString());
                 cities.add(new CityModel(
-                                Integer.parseInt(city.get("cityId").toString()),
-                                city.get("city").toString(),
-                                Integer.parseInt(city.get("countryId").toString())
-                        )
+                        Integer.parseInt(city.get("cityId").toString()),
+                        city.get("city").toString(),
+                        Store.getCountries().stream().filter(country -> country.getId() == countryId).findFirst().get()
+                    )
                 );
             }
             return cities;
@@ -37,7 +39,7 @@ abstract public class DBCity {
                 name +"', '" +
                 countryId +"', '" +
                 date +"', '" +
-                date +"', '" +
+                user +"', '" +
                 user +"');";
         System.out.println("executing query: " + insertStatement);
         int affectedRows = stmt.executeUpdate(insertStatement, Statement.RETURN_GENERATED_KEYS);
@@ -84,5 +86,14 @@ abstract public class DBCity {
         } else {
             System.out.println("No change!");
         }
+    }
+
+    public static void delete(CityModel city) throws SQLException {
+        Connection conn = DBInstance.getInstance().getConnection();
+        Statement stmt = conn.createStatement();
+        String deleteStatement = "DELETE FROM city WHERE cityId = " + city.getId() + ";";
+        System.out.println("executing query: " + deleteStatement);
+        stmt.executeUpdate(deleteStatement);
+        DBCountry.delete(city.getCountry());
     }
 }
