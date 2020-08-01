@@ -60,4 +60,9 @@ public class CustomerModel {
     public boolean getActive() {
         return active;
     }
+
+    @Override
+    public String toString() {
+        return name + " - " + getCityName() + ", " + getCountryName() + " - " + getPhone();
+    }
 }

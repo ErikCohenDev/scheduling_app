@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
@@ -10,5 +7,37 @@
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="main.controller.AppointmentModify"
             prefHeight="500" prefWidth="1000">
-
+    <children>
+        <Button layoutX="508.0" layoutY="449.0" mnemonicParsing="false" onAction="#goBack" prefHeight="37.0" prefWidth="138.0" text="Cancel" />
+        <Button layoutX="362.0" layoutY="449.0" mnemonicParsing="false" onAction="#update" prefHeight="37.0" prefWidth="138.0" text="Add" />
+        <TextField fx:id="titleInput" layoutX="201.0" layoutY="64.0" prefHeight="27.0" prefWidth="598.0" />
+        <Label layoutX="201.0" layoutY="41.0" prefHeight="17.0" prefWidth="69.0" text="Title" />
+        <TextField fx:id="locationInput" layoutX="201.0" layoutY="294.0" prefHeight="27.0" prefWidth="270.0" />
+        <Label layoutX="201.0" layoutY="277.0" prefHeight="17.0" prefWidth="69.0" text="Location" />
+        <TextField fx:id="descriptionInput" layoutX="201.0" layoutY="117.0" prefHeight="27.0" prefWidth="598.0" />
+        <Label layoutX="201.0" layoutY="100.0" prefHeight="17.0" prefWidth="69.0" text="Description" />
+        <Label layoutX="201.0" layoutY="160.0" prefHeight="17.0" prefWidth="69.0" text="Contact" />
+        <TextField fx:id="typeInput" layoutX="201.0" layoutY="234.0" prefHeight="27.0" prefWidth="270.0" />
+        <Label layoutX="201.0" layoutY="217.0" prefHeight="17.0" prefWidth="69.0" text="Type" />
+        <TextField fx:id="urlInput" layoutX="529.0" layoutY="234.0" prefHeight="27.0" prefWidth="270.0" />
+        <Label layoutX="529.0" layoutY="217.0" prefHeight="17.0" prefWidth="69.0" text="URL" />
+        <TextField fx:id="countryInput" layoutX="529.0" layoutY="294.0" prefHeight="27.0" prefWidth="270.0" />
+        <Label layoutX="529.0" layoutY="277.0" prefHeight="17.0" prefWidth="69.0" text="Country" />
+        <Button layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#goBack" prefHeight="17.0" prefWidth="87.0" text="Back" />
+        <DatePicker fx:id="startDatePicker" layoutX="201.0" layoutY="359.0" prefHeight="27.0" prefWidth="168.0" />
+        <TextField fx:id="startHourInput" layoutX="236.0" layoutY="400.0" prefHeight="27.0" prefWidth="44.0" />
+        <TextField fx:id="startMinInput" layoutX="314.0" layoutY="400.0" prefHeight="27.0" prefWidth="44.0" />
+        <Label layoutX="201.0" layoutY="405.0" text="Hour" />
+        <Label layoutX="285.0" layoutY="405.0" text="Min" />
+        <Label layoutX="201.0" layoutY="333.0" prefHeight="17.0" prefWidth="69.0" text="Start" />
+        <DatePicker fx:id="endDatePicker" layoutX="529.0" layoutY="359.0" prefHeight="27.0" prefWidth="168.0" />
+        <TextField fx:id="endHourInput" layoutX="564.0" layoutY="400.0" prefHeight="27.0" prefWidth="44.0" />
+        <TextField fx:id="endMinInput" layoutX="642.0" layoutY="400.0" prefHeight="27.0" prefWidth="44.0" />
+        <Label layoutX="529.0" layoutY="406.0" text="Hour" />
+        <Label layoutX="613.0" layoutY="406.0" text="Min" />
+        <Label layoutX="530.0" layoutY="333.0" prefHeight="17.0" prefWidth="69.0" text="End" />
+        <ChoiceBox fx:id="startPeriodChoiceBox" layoutX="369.0" layoutY="400.0" prefHeight="28.0" prefWidth="87.0" />
+        <ChoiceBox fx:id="endPeriodChoiceBox" layoutX="697.0" layoutY="400.0" prefHeight="28.0" prefWidth="87.0" />
+        <ChoiceBox fx:id="customerChoiceBox" layoutX="201.0" layoutY="178.0" prefHeight="28.0" prefWidth="598.0" />
+    </children>
 </AnchorPane>

@@ -39,10 +39,11 @@ abstract public class DBAppointment {
             return null;
         }
     }
+
     public void create(String name, int countryId, String date, String user) throws SQLException{
         Connection conn = DBInstance.getInstance().getConnection();
         Statement stmt = conn.createStatement();
-        String insertStatement = "INSERT INTO appointment(city, countryId, createDate, createdBy, lastupdateBy) " +
+        String insertStatement = "INSERT INTO appointment(city, countryId, createDate, createdBy, lastUpdateBy) " +
                 "VALUES ('"+
                 name +"', '" +
                 countryId +"', '" +
@@ -59,7 +60,7 @@ abstract public class DBAppointment {
         }
     }
 
-    public void updateById(int id, String name, String user) throws SQLException{
+    public void update(int id, String name, String user) throws SQLException{
         Connection conn = DBInstance.getInstance().getConnection();
         Statement stmt = conn.createStatement();
         String updateStatement = "UPDATE appointment " +
@@ -77,17 +78,6 @@ abstract public class DBAppointment {
         }
     }
 
-    public void deleteById(int id) throws SQLException {
-        Connection conn = DBInstance.getInstance().getConnection();
-        Statement stmt = conn.createStatement();
-        String deleteStatement = "DELETE FROM appointment WHERE appointmentId = " + id + ";";
-        System.out.println("executing query: " + deleteStatement);
-        stmt.executeUpdate(deleteStatement);
-
-        if (stmt.getUpdateCount() > 0) {
-            System.out.println(stmt.getUpdateCount() + " rows deleted");
-        } else {
-            System.out.println("No change!");
-        }
+    public static void delete(AppointmentModel selectedAppointment) {
     }
 }
