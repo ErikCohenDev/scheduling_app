@@ -4,17 +4,17 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import main.Main;
-import main.db.DBInstance;
+import main.db.DBAppointment;
 import main.db.Store;
 import main.model.AppointmentModel;
 
 import java.net.URL;
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.ResourceBundle;
 
 public class Appointment implements Initializable {
@@ -52,6 +52,31 @@ public class Appointment implements Initializable {
         this.appointmentURLCol.setCellValueFactory(new PropertyValueFactory("url"));
         this.appointmentStartCol.setCellValueFactory(new PropertyValueFactory("start"));
         this.appointmentEndCol.setCellValueFactory(new PropertyValueFactory("end"));
+    }
+
+    public void add() throws Exception {
+        Main.goToAppointmentAdd();
+    }
+
+    public void update() throws Exception {
+        final AppointmentModel selectedAppointment = appointmentTable.getSelectionModel().getSelectedItem();
+        if (selectedAppointment == null) {
+            Alert alert = new Alert(Alert.AlertType.ERROR, String.valueOf("Please Select an Appointment"));
+            alert.show();
+            return;
+        }
+        Main.goToAppointmentModify(selectedAppointment);
+    }
+
+    public void delete() throws Exception {
+        final AppointmentModel selectedAppointment = appointmentTable.getSelectionModel().getSelectedItem();
+        if (selectedAppointment == null) {
+            Alert alert = new Alert(Alert.AlertType.ERROR, String.valueOf("Please Select an Appointment"));
+            alert.show();
+            return;
+        }
+        DBAppointment.delete(selectedAppointment);
+        initialize(null, null);
     }
 
     public void goBack() throws Exception {
