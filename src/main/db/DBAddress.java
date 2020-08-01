@@ -65,6 +65,27 @@ abstract public class DBAddress {
         }
     }
 
+    public static void update(int id, String address, String address2, String zip, String phone, String utcLocalDateTime, String user) throws SQLException{
+        Connection conn = DBInstance.getInstance().getConnection();
+        Statement stmt = conn.createStatement();
+        String updateStatement = "UPDATE address " +
+                "set address = '" + address +"', " +
+                "address2 = '" + address2 +"', " +
+                "postalCode = '" + zip +"', " +
+                "phone = '" + phone +"', " +
+                "lastUpdate = '" + utcLocalDateTime +"', " +
+                "lastUpdateBy = '" + user +"' " +
+                "WHERE addressId = " + id + ";";
+        System.out.println("executing query: " + updateStatement);
+        stmt.executeUpdate(updateStatement);
+
+        if (stmt.getUpdateCount() > 0) {
+            System.out.println(stmt.getUpdateCount() + " rows updated");
+        } else {
+            System.out.println("No change!");
+        }
+    }
+
     public static void delete(AddressModel address) throws SQLException {
         Connection conn = DBInstance.getInstance().getConnection();
         Statement stmt = conn.createStatement();

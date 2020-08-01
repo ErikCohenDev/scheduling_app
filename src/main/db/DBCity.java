@@ -1,7 +1,6 @@
 package main.db;
 
 import main.model.CityModel;
-import main.model.CountryModel;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -56,11 +55,12 @@ abstract public class DBCity {
         }
     }
 
-    public static void updateNameById(int id, String name, String user) throws SQLException{
+    public static void update(int id, String name, String utcLocalDateTime, String user) throws SQLException{
         Connection conn = DBInstance.getInstance().getConnection();
         Statement stmt = conn.createStatement();
         String updateStatement = "UPDATE city " +
                 "set city = '" + name +"' , " +
+                "lastUpdate = '" + utcLocalDateTime +"' ," +
                 "lastUpdateBy = '" + user +"' " +
                 "WHERE cityId = " +
                 id + ";";
@@ -69,20 +69,6 @@ abstract public class DBCity {
 
         if (stmt.getUpdateCount() > 0) {
             System.out.println(stmt.getUpdateCount() + " rows updated");
-        } else {
-            System.out.println("No change!");
-        }
-    }
-
-    public static void deleteCityById(int id) throws SQLException {
-        Connection conn = DBInstance.getInstance().getConnection();
-        Statement stmt = conn.createStatement();
-        String deleteStatement = "DELETE FROM city WHERE cityId = " + id + ";";
-        System.out.println("executing query: " + deleteStatement);
-        stmt.executeUpdate(deleteStatement);
-
-        if (stmt.getUpdateCount() > 0) {
-            System.out.println(stmt.getUpdateCount() + " rows deleted");
         } else {
             System.out.println("No change!");
         }
