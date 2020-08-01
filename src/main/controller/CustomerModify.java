@@ -3,6 +3,7 @@ package main.controller;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextInputControl;
 import main.Main;
 import main.db.*;
@@ -18,6 +19,8 @@ import java.time.format.DateTimeFormatter;
 import java.util.ResourceBundle;
 
 public class CustomerModify implements Initializable {
+    @FXML
+    private Label idLabel;
     @FXML
     private TextInputControl nameInput;
     @FXML
@@ -40,6 +43,7 @@ public class CustomerModify implements Initializable {
     }
 
     public void initData(final CustomerModel customer) {
+        idLabel.setText(String.valueOf(customer.getId()));
         nameInput.setText(customer.getName());
         activeCheckbox.setSelected(customer.getActive());
 
@@ -53,6 +57,7 @@ public class CustomerModify implements Initializable {
     }
 
     public void update() throws Exception {
+        int customerId = Integer.parseInt(idLabel.getText());
         String name = nameInput.getText();
         String phone = phoneInput.getText();
         String address = addressInput.getText();
@@ -62,6 +67,13 @@ public class CustomerModify implements Initializable {
         String country = countryInput.getText();
         boolean active = activeCheckbox.isSelected();
 
+        CustomerModel customer = Store.getCustomers().stream()
+                .filter(cust -> cust.getId() == customerId).findFirst().get();
+
+        int countryId = customer.getCountry().getId();
+        int cityId = customer.getCity().getId();
+        int addressId = customer.getAddress().getId();
+
         LocalDateTime ldt = LocalDateTime.now();
         ZonedDateTime locZdt = ZonedDateTime.of(ldt, ZoneId.systemDefault());
         ZonedDateTime utcZdt = locZdt.withZoneSameInstant(ZoneOffset.UTC);
@@ -69,11 +81,31 @@ public class CustomerModify implements Initializable {
 
         String utcLocalDateTime = customFormatter.format(utcZdt);
         String user = Authenticate.user.getUsername();
-        int isActive = active ? 1 : 0;
-        int countryId = DBCountry.create(country, utcLocalDateTime, user);
-        int cityId = DBCity.create(city, countryId, utcLocalDateTime, user);
-        int addressId = DBAddress.create(address, address2, cityId, zip, phone, utcLocalDateTime, user);
-        DBCustomer.create(name, addressId, isActive, utcLocalDateTime, user);
+
+        String oldCountry = customer.getCountryName();
+        if (!country.equals(oldCountry)) {
+            DBCountry.update(countryId, country, utcLocalDateTime, user);
+        }
+
+        String oldCity = customer.getCityName();
+        if (!city.equals(oldCity)) {
+            DBCity.update(cityId, city, utcLocalDateTime, user);
+        }
+
+        String oldAddress = customer.getAddressName();
+        String oldAddress2 = customer.getAddress2();
+        String oldZip = customer.getZip();
+        String oldPhone = customer.getPhone();
+
+        if (!address.equals(oldAddress) || !address2.equals(oldAddress2) || !zip.equals(oldZip) || !phone.equals(oldPhone)) {
+            DBAddress.update(addressId, address, address2, zip, phone, utcLocalDateTime, user);
+        }
+
+        String oldName = customer.getName();
+        boolean oldActive = customer.getActive();
+        if (!name.equals(oldName) || oldActive != active) {
+            DBCustomer.update(customerId, name, active, utcLocalDateTime, user);
+        }
         Store.refreshCustomer();
         Main.goToCustomer();
     }

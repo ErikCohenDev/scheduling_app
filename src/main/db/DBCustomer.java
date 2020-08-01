@@ -59,6 +59,25 @@ abstract public class DBCustomer {
             }
         }
     }
+    public static void update(int id, String name, boolean isActive, String utcLocalDateTime, String user) throws SQLException{
+        Connection conn = DBInstance.getInstance().getConnection();
+        Statement stmt = conn.createStatement();
+        String updateStatement = "UPDATE customer " +
+                "set customerName = '" + name +"' , " +
+                "active = " + (isActive ? 1 : 0) +" ," +
+                "lastUpdate = '" + utcLocalDateTime +"' ," +
+                "lastUpdateBy = '" + user +"' " +
+                "WHERE customerId = " +
+                id + ";";
+        System.out.println("executing query: " + updateStatement);
+        stmt.executeUpdate(updateStatement);
+
+        if (stmt.getUpdateCount() > 0) {
+            System.out.println(stmt.getUpdateCount() + " rows updated");
+        } else {
+            System.out.println("No change!");
+        }
+    }
 
     public static void delete(CustomerModel customer) throws SQLException {
         Connection conn = DBInstance.getInstance().getConnection();

@@ -52,22 +52,17 @@ abstract public class DBCountry {
         }
     }
 
-    public static void updateNameById(int id, String name, String user) throws SQLException{
+    public static void update(int countryId, String countryName, String utcLocalDateTime, String user) throws SQLException {
         Connection conn = DBInstance.getInstance().getConnection();
         Statement stmt = conn.createStatement();
         String updateStatement = "UPDATE country " +
-                "set country = '" + name +"' , " +
-                "lastupdateBy = '" + user +"' " +
+                "set country = '" + countryName +"' , " +
+                "lastUpdate = '" + utcLocalDateTime +"' ," +
+                "lastUpdateBy = '" + user +"' " +
                 "WHERE countryId = " +
-                id + ";";
+                countryId + ";";
         System.out.println("executing query: " + updateStatement);
         stmt.executeUpdate(updateStatement);
-
-        if (stmt.getUpdateCount() > 0) {
-            System.out.println(stmt.getUpdateCount() + " rows updated");
-        } else {
-            System.out.println("No change!");
-        }
     }
 
     public static void delete(CountryModel country) throws SQLException {
@@ -78,4 +73,5 @@ abstract public class DBCountry {
         stmt.executeUpdate(deleteStatement);
         Store.refreshCustomer();
     }
+
 }
