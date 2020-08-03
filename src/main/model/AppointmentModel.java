@@ -1,6 +1,8 @@
 package main.model;
 
-import java.time.LocalDateTime;
+import main.util.DateUtils;
+
+import java.time.ZonedDateTime;
 
 public class AppointmentModel {
     private int id;
@@ -10,12 +12,12 @@ public class AppointmentModel {
     private String contact;
     private String type;
     private String url;
-    private LocalDateTime start;
-    private LocalDateTime end;
+    private ZonedDateTime start;
+    private ZonedDateTime end;
     private int customerId;
     private int userId;
 
-    public AppointmentModel(int id, String title, String description, String location, String contact, String type, String url, LocalDateTime start, LocalDateTime end, int customerId, int userId) {
+    public AppointmentModel(int id, String title, String description, String location, String contact, String type, String url, ZonedDateTime start, ZonedDateTime end, int customerId, int userId) {
         this.id = id;
         this.title = title;
         this.description = description;
@@ -85,20 +87,20 @@ public class AppointmentModel {
         this.url = url;
     }
 
-    public LocalDateTime getStart() {
+    public ZonedDateTime getStartDate() {
         return this.start;
     }
 
-    public void setStart(LocalDateTime start) {
-        this.start = start;
+    public String getStart() {
+        return DateUtils.zonedDateTimeToString(this.start);
     }
 
-    public LocalDateTime getEnd() {
+    public ZonedDateTime getEndDate() {
         return this.end;
     }
 
-    public void setEnd(LocalDateTime end) {
-        this.end = end;
+    public String getEnd() {
+        return DateUtils.zonedDateTimeToString(this.end);
     }
 
     public int getCustomerId() {

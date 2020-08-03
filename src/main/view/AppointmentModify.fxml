@@ -9,7 +9,7 @@
             prefHeight="500" prefWidth="1000">
     <children>
         <Button layoutX="508.0" layoutY="449.0" mnemonicParsing="false" onAction="#goBack" prefHeight="37.0" prefWidth="138.0" text="Cancel" />
-        <Button layoutX="362.0" layoutY="449.0" mnemonicParsing="false" onAction="#update" prefHeight="37.0" prefWidth="138.0" text="Add" />
+        <Button layoutX="362.0" layoutY="449.0" mnemonicParsing="false" onAction="#update" prefHeight="37.0" prefWidth="138.0" text="Update" />
         <TextField fx:id="titleInput" layoutX="201.0" layoutY="64.0" prefHeight="27.0" prefWidth="598.0" />
         <Label layoutX="201.0" layoutY="41.0" prefHeight="17.0" prefWidth="69.0" text="Title" />
         <TextField fx:id="locationInput" layoutX="201.0" layoutY="294.0" prefHeight="27.0" prefWidth="270.0" />
