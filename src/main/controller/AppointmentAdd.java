@@ -32,8 +32,6 @@ public class AppointmentAdd implements Initializable {
     @FXML
     private TextInputControl locationInput;
     @FXML
-    private TextInputControl countryInput;
-    @FXML
     private ChoiceBox customerChoiceBox;
     @FXML
     private DatePicker startDatePicker;
@@ -70,7 +68,6 @@ public class AppointmentAdd implements Initializable {
         String type = typeInput.getText();
         String url = urlInput.getText();
         String location = locationInput.getText();
-        String country = countryInput.getText();
         CustomerModel customer = (CustomerModel) customerChoiceBox.getValue();
         LocalDate startDate = startDatePicker.getValue();
         int startHour = Integer.parseInt(startHourInput.getText());
@@ -79,7 +76,7 @@ public class AppointmentAdd implements Initializable {
         int endHour = Integer.parseInt(endHourInput.getText());
         int endMin = Integer.parseInt(endMinInput.getText());
 
-        if (!validForm(title, description, type, url, location, country, startDate, endDate)) {
+        if (!validForm(title, description, type, url, location, startDate, endDate)) {
             return;
         }
 
@@ -87,12 +84,12 @@ public class AppointmentAdd implements Initializable {
         LocalDateTime endDateTime = endDate.atTime(endHour, endMin);
 
         UserModel user = Authenticate.user;
-        DBAppointment.create(title, description, type, url, location, country, customer, startDateTime, endDateTime, user);
+        DBAppointment.create(title, description, type, url, location, customer, startDateTime, endDateTime, user);
         Store.refreshAppointments();
         goBack();
     }
 
-    private boolean validForm(String title, String description, String type, String url, String location, String country, LocalDate startDate, LocalDate endDate) {
+    private boolean validForm(String title, String description, String type, String url, String location, LocalDate startDate, LocalDate endDate) {
         Alert alert = null;
         if (title == null || title.equals("")) {
             alert = new Alert(Alert.AlertType.ERROR, "Please Enter a Title");
@@ -108,9 +105,6 @@ public class AppointmentAdd implements Initializable {
         }
         if (location == null || location.equals("")) {
             alert = new Alert(Alert.AlertType.ERROR, "Please Enter a Location");
-        }
-        if (country == null || country.equals("")) {
-            alert = new Alert(Alert.AlertType.ERROR, "Please Enter a Country");
         }
         if (startDate == null) {
             alert = new Alert(Alert.AlertType.ERROR, "Please Enter a Start Date");
