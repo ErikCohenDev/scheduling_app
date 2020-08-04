@@ -45,4 +45,8 @@ public class Store {
         customers = DBCustomer.getAll();
         appointments = DBAppointment.getAll();
     }
+
+    public static void refreshAppointments() {
+        appointments = DBAppointment.getAll();
+    }
 }
