@@ -1,9 +1,44 @@
 package main.controller;
 
+import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
+import javafx.scene.control.Label;
+import javafx.scene.layout.Pane;
 import main.Main;
 import main.db.Authenticate;
+import main.db.Store;
+import main.model.AppointmentModel;
+import main.util.DateUtils;
 
-public class Dashboard {
+import java.net.URL;
+import java.time.ZonedDateTime;
+import java.util.ResourceBundle;
+
+public class Dashboard implements Initializable {
+    @FXML
+    private Label notificationLabel;
+    @FXML
+    private Pane notificationBox;
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        notificationBox.setVisible(false);
+
+        AppointmentModel nextAppointment = Store.getAppointments().stream().reduce((prev, next) -> {
+            if (next.getStartDate().isBefore(prev.getStartDate()) && next.getStartDate().isAfter(ZonedDateTime.now())) {
+                return next;
+            }
+            return prev;
+        }).get();
+
+        if (nextAppointment != null && nextAppointment.isToday()) {
+            String startTime = DateUtils.getTimeStringFromZonedTime(nextAppointment.getStartDate());
+            String customer = nextAppointment.getContactObject().getName();
+            notificationLabel.setText("You have an upcoming appointment with " + customer + " at " + startTime);
+            notificationBox.setVisible(true);
+        }
+    }
+
     public void goToCustomerView() throws Exception {
         Main.goToCustomer();
     }
