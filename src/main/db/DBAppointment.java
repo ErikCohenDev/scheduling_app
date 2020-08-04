@@ -1,7 +1,6 @@
 package main.db;
 
 import main.model.AppointmentModel;
-import main.model.CityModel;
 import main.model.CustomerModel;
 import main.model.UserModel;
 import main.util.DateUtils;
