@@ -4,7 +4,10 @@ import main.db.Store;
 import main.util.DateUtils;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.util.Calendar;
 
 public class AppointmentModel {
     private int id;
@@ -105,9 +108,11 @@ public class AppointmentModel {
         return this.customerId;
     }
 
-    public boolean isToday() {
-        LocalDate startDate = this.start.toLocalDate();
-        LocalDate today = LocalDate.now();
-        return startDate.isEqual(today);
+    public boolean isWithin15Mins() {
+        ZonedDateTime now = ZonedDateTime.now();
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.MINUTE, 15);
+        ZonedDateTime min15FromNow = ZonedDateTime.from(calendar.toInstant().atZone(ZoneId.systemDefault()));
+        return this.start.isAfter(now) && this.start.isBefore(min15FromNow);// (now);
     }
 }

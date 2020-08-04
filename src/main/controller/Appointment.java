@@ -88,6 +88,7 @@ public class Appointment implements Initializable {
     }
 
     private List<AppointmentModel> getAppointmentsForTheMonth() {
+        //  Chose to use a lambda expression here to quickly filter appointments instead of a traditional loop seems more readable.
         return Store.getAppointments().stream()
                 .filter(appointment -> appointment.getStartDate().getMonth() == LocalDate.now().getMonth())
                 .collect(Collectors.toList());
@@ -97,6 +98,7 @@ public class Appointment implements Initializable {
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.WEEK_OF_MONTH, 1);
         ZonedDateTime aWeekFromToday = ZonedDateTime.from(calendar.toInstant().atZone(ZoneId.systemDefault()));
+        //  Chose to use a lambda expression here to quickly filter appointments instead of a traditional loop seems more readable.
         return Store.getAppointments().stream()
                 .filter(appointment -> appointment.getStartDate().isBefore(ChronoZonedDateTime.from(aWeekFromToday)) && appointment.getStartDate().isAfter(ZonedDateTime.now()))
                 .collect(Collectors.toList());
