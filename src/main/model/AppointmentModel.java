@@ -1,7 +1,9 @@
 package main.model;
 
+import main.db.Store;
 import main.util.DateUtils;
 
+import java.time.LocalDate;
 import java.time.ZonedDateTime;
 
 public class AppointmentModel {
@@ -51,10 +53,6 @@ public class AppointmentModel {
         return this.description;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
     public String getLocation() {
         return this.location;
     }
@@ -67,8 +65,8 @@ public class AppointmentModel {
         return this.contact;
     }
 
-    public void setContact(String contact) {
-        this.contact = contact;
+    public CustomerModel getContactObject() {
+        return Store.getCustomers().stream().filter(contact -> contact.getId() == customerId).findFirst().get();
     }
 
     public String getType() {
@@ -107,15 +105,9 @@ public class AppointmentModel {
         return this.customerId;
     }
 
-    public void setCustomerId(int customerId) {
-        this.customerId = customerId;
-    }
-
-    public int getUserId() {
-        return this.userId;
-    }
-
-    public void setUserId(int userId) {
-        this.userId = userId;
+    public boolean isToday() {
+        LocalDate startDate = this.start.toLocalDate();
+        LocalDate today = LocalDate.now();
+        return startDate.isEqual(today);
     }
 }
