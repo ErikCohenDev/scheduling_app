@@ -76,6 +76,7 @@ public class Appointment implements Initializable {
             return;
         }
         DBAppointment.delete(selectedAppointment);
+        Store.refreshAppointments();
         initialize(null, null);
     }
 

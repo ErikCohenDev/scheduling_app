@@ -1,6 +1,7 @@
 package main.db;
 
 import main.model.AppointmentModel;
+import main.model.CityModel;
 import main.model.CustomerModel;
 import main.model.UserModel;
 import main.util.DateUtils;
@@ -57,21 +58,10 @@ abstract public class DBAppointment {
         return zonedDateTime;
     }
 
-    public static void create(String title, String description, String type, String url, String location, String country, CustomerModel customer, LocalDateTime startDateTime, LocalDateTime endDateTime, UserModel user) throws SQLException {
-        LocalDateTime ldt = LocalDateTime.now();
-        ZonedDateTime locZdt = ZonedDateTime.of(ldt, ZoneId.systemDefault());
-        ZonedDateTime utcZdt = locZdt.withZoneSameInstant(ZoneOffset.UTC);
-        DateTimeFormatter customFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-
-        String utcLocalDateTime = customFormatter.format(utcZdt);
-
-        ZonedDateTime startLocZdt = ZonedDateTime.of(startDateTime, ZoneId.systemDefault());
-        ZonedDateTime endLocZdt = ZonedDateTime.of(endDateTime, ZoneId.systemDefault());
-
-        ZonedDateTime utcStartZdt = startLocZdt.withZoneSameInstant(ZoneOffset.UTC);
-        ZonedDateTime utcEndZdt = endLocZdt.withZoneSameInstant(ZoneOffset.UTC);
-        String utcStartLocalDateTime = customFormatter.format(utcStartZdt);
-        String utcEndLocalDateTime = customFormatter.format(utcEndZdt);
+    public static void create(String title, String description, String type, String url, String location, CustomerModel customer, LocalDateTime startDateTime, LocalDateTime endDateTime, UserModel user) throws SQLException {
+          String UTCStartDateTime = DateUtils.getUTCStringFromLocalTime(startDateTime);
+          String UTCEndDateTimee = DateUtils.getUTCStringFromLocalTime(endDateTime);
+          String UTCNow = DateUtils.getUTCStringNow();
 
         Connection conn = DBInstance.getInstance().getConnection();
         Statement stmt = conn.createStatement();
@@ -85,11 +75,11 @@ abstract public class DBAppointment {
                 customer.getPhone() +"', '" +
                 type +"', '" +
                 url +"', '" +
-                utcStartLocalDateTime +"', '" +
-                utcEndLocalDateTime +"', '" +
-                utcLocalDateTime +"', '" +
+                UTCStartDateTime +"', '" +
+                UTCEndDateTimee +"', '" +
+                UTCNow +"', '" +
                 user.getUsername() +"', '" +
-                utcLocalDateTime +"', '" +
+                UTCNow +"', '" +
                 user.getUsername() +"');";
         System.out.println("executing query: " + insertStatement);
         stmt.executeUpdate(insertStatement, Statement.RETURN_GENERATED_KEYS);
@@ -101,24 +91,36 @@ abstract public class DBAppointment {
         }
     }
 
-    public void update(int id, String name, String user) throws SQLException{
+    public static void update(int id, String title, String description, String type, String url, String location, CustomerModel customer, LocalDateTime startDateTime, LocalDateTime endDateTime, UserModel user) throws SQLException {
+        String UTCStartDateTime = DateUtils.getUTCStringFromLocalTime(startDateTime);
+        String UTCEndDateTime = DateUtils.getUTCStringFromLocalTime(endDateTime);
+        String UTCNow = DateUtils.getUTCStringNow();
+
         Connection conn = DBInstance.getInstance().getConnection();
         Statement stmt = conn.createStatement();
         String updateStatement = "UPDATE appointment " +
-                "set city = '" + name +"' , " +
-                "lastupdateBy = '" + user +"' " +
-                "WHERE cityId = " +
+                "set title = '" + title +"', " +
+                "description = '" + description +"', " +
+                "type = '" + type +"', " +
+                "url = '" + url +"', " +
+                "location = '" + location +"', " +
+                "contact = '" + customer +"', " +
+                "customerId = " + customer.getId() +", " +
+                "start = '" + UTCStartDateTime +"', " +
+                "end = '" + UTCEndDateTime +"', " +
+                "lastUpdate = '" + UTCNow +"', " +
+                "lastUpdateBy = '" + user.getUsername() +"' " +
+                "WHERE appointmentId = " +
                 id + ";";
         System.out.println("executing query: " + updateStatement);
         stmt.executeUpdate(updateStatement);
-
-        if (stmt.getUpdateCount() > 0) {
-            System.out.println(stmt.getUpdateCount() + " rows updated");
-        } else {
-            System.out.println("No change!");
-        }
     }
 
-    public static void delete(AppointmentModel selectedAppointment) {
+    public static void delete(AppointmentModel appointment) throws SQLException {
+        Connection conn = DBInstance.getInstance().getConnection();
+        Statement stmt = conn.createStatement();
+        String deleteStatement = "DELETE FROM appointment WHERE appointmentId = " + appointment.getId() + ";";
+        System.out.println("executing query: " + deleteStatement);
+        stmt.executeUpdate(deleteStatement);
     }
 }

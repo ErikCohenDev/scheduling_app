@@ -22,8 +22,6 @@
         <Label layoutX="201.0" layoutY="217.0" prefHeight="17.0" prefWidth="69.0" text="Type" />
         <TextField fx:id="urlInput" layoutX="529.0" layoutY="234.0" prefHeight="27.0" prefWidth="270.0" />
         <Label layoutX="529.0" layoutY="217.0" prefHeight="17.0" prefWidth="69.0" text="URL" />
-        <TextField fx:id="countryInput" layoutX="529.0" layoutY="294.0" prefHeight="27.0" prefWidth="270.0" />
-        <Label layoutX="529.0" layoutY="277.0" prefHeight="17.0" prefWidth="69.0" text="Country" />
         <Button layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#goBack" prefHeight="17.0" prefWidth="87.0" text="Back" />
         <DatePicker fx:id="startDatePicker" layoutX="201.0" layoutY="359.0" prefHeight="27.0" prefWidth="168.0" />
         <TextField fx:id="startHourInput" layoutX="236.0" layoutY="400.0" prefHeight="27.0" prefWidth="44.0" />
