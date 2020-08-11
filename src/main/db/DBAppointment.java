@@ -16,7 +16,7 @@ import java.util.*;
 abstract public class DBAppointment {
     public static List<AppointmentModel> getAll() {
         Connection conn = DBInstance.getInstance().getConnection();
-        List<HashMap> appointmentsHash = DBInstance.getInstance().selectAll(conn, "appointment");
+        List<HashMap> appointmentsHash = DBInstance.getInstance().selectAndFilterByAuthUser(conn, "appointment", Authenticate.user.getId());
         if (appointmentsHash != null && appointmentsHash.size() > 0) {
             List<AppointmentModel> appointments = new ArrayList();
             System.out.println("appointments: ");
@@ -121,5 +121,39 @@ abstract public class DBAppointment {
         String deleteStatement = "DELETE FROM appointment WHERE appointmentId = " + appointment.getId() + ";";
         System.out.println("executing query: " + deleteStatement);
         stmt.executeUpdate(deleteStatement);
+    }
+
+    public static List<AppointmentModel> getAllFromAllUsers() {
+        Connection conn = DBInstance.getInstance().getConnection();
+        List<HashMap> appointmentsHash = DBInstance.getInstance().selectAll(conn, "appointment");
+        if (appointmentsHash != null && appointmentsHash.size() > 0) {
+            List<AppointmentModel> appointments = new ArrayList();
+            System.out.println("appointments: ");
+            for (HashMap appointment: appointmentsHash) {
+                String startDateString = String.valueOf(appointment.get("start"));
+                String endDateString = String.valueOf(appointment.get("end"));
+
+                ZonedDateTime startDate = DateUtils.UTCStringToZonedDateTime(startDateString);
+                ZonedDateTime endDate = DateUtils.UTCStringToZonedDateTime(endDateString);
+
+                appointments.add(new AppointmentModel(
+                                Integer.parseInt(appointment.get("appointmentId").toString()),
+                                appointment.get("title").toString(),
+                                appointment.get("description").toString(),
+                                appointment.get("location").toString(),
+                                appointment.get("contact").toString(),
+                                appointment.get("type").toString(),
+                                appointment.get("url").toString(),
+                                startDate,
+                                endDate,
+                                Integer.parseInt(appointment.get("customerId").toString()),
+                                Integer.parseInt(appointment.get("userId").toString())
+                        )
+                );
+            }
+            return appointments;
+        } else {
+            return null;
+        }
     }
 }

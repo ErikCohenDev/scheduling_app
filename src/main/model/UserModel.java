@@ -1,5 +1,10 @@
 package main.model;
 
+import main.db.Store;
+
+import java.time.format.TextStyle;
+import java.util.Locale;
+
 public class UserModel {
     private int id;
     private String username;
@@ -13,6 +18,12 @@ public class UserModel {
 
     public int getId() {
         return id;
+    }
+
+    public int allAppointmentCountByMonth(int userId, String month) {
+        return (int) Store.getAllAppointments().stream()
+                .filter(appointment -> userId == appointment.getUser().id && appointment.getStartDate().getMonth().getDisplayName(TextStyle.FULL, Locale.US).equals(month))
+                .count();
     }
 
     public String getUsername() {

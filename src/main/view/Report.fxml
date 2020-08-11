@@ -1,11 +1,66 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
-
 
 <AnchorPane prefHeight="500" prefWidth="1000" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.controller.Report">
    <children>
-      <Button layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#goBack" text="Back" />
+      <TabPane layoutY="32.0" prefHeight="468.0" prefWidth="1000.0" tabClosingPolicy="UNAVAILABLE">
+        <tabs>
+          <Tab text="Appointment">
+            <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <TableView fx:id="appointmentReportTable" layoutY="58.0" prefHeight="378.0" prefWidth="1000.0">
+                          <columns>
+                              <TableColumn fx:id="appointmentReportMonthCol" prefWidth="150.0" text="Month" />
+                            <TableColumn fx:id="appointmentReportAmountCol" prefWidth="140.0" text="Amount" />
+                          </columns>
+                        </TableView>
+                        <ComboBox fx:id="typesComboBox" layoutX="70.0" layoutY="20.0" onAction="#generateAppointmentByType" prefWidth="150.0" />
+                        <Label layoutX="25.0" layoutY="25.0" prefHeight="17.0" prefWidth="60.0" text="Type" />
+                     </children>
+                  </AnchorPane>
+            </content>
+          </Tab>
+          <Tab text="Consultant">
+            <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <TableView fx:id="consultantReportTable" layoutY="56.0" prefHeight="378.0" prefWidth="1000.0">
+                           <columns>
+                              <TableColumn fx:id="consultantReportUserCol" prefWidth="150.0" text="User" />
+                              <TableColumn fx:id="consultantReportAppointmentCol" minWidth="0.0" prefWidth="200.0" text="Number of Appointments" />
+                           </columns>
+                        </TableView>
+                        <ComboBox fx:id="monthComboBox" layoutX="70.0" layoutY="20.0" onAction="#generateAppointmentReportByUser" prefWidth="150.0" />
+                        <Label layoutX="25.0" layoutY="25.0" prefHeight="17.0" prefWidth="60.0" text="Month" />
+                     </children>
+                  </AnchorPane>
+            </content>
+          </Tab>
+            <Tab text="Cities">
+               <content>
+                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <TableView fx:id="cityReportTable" prefHeight="437.0" prefWidth="1000.0">
+                           <columns>
+                              <TableColumn fx:id="cityReportTableCustomerCol" prefWidth="150.0" text="# of Customers" />
+                              <TableColumn fx:id="cityReportTableCityCol" minWidth="0.0" prefWidth="161.0" text="City" />
+                           </columns>
+                        </TableView>
+                     </children>
+                  </AnchorPane>
+               </content>
+            </Tab>
+        </tabs>
+      </TabPane>
+      <Button layoutX="13.0" layoutY="4.0" mnemonicParsing="false" onAction="#goBack" text="Back" />
    </children>
 </AnchorPane>

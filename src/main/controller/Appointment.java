@@ -19,10 +19,8 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.chrono.ChronoZonedDateTime;
-import java.time.temporal.TemporalAccessor;
-import java.time.temporal.TemporalAmount;
+import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
@@ -74,7 +72,10 @@ public class Appointment implements Initializable {
                 appointmentTable.setItems(observableAppointments);
             }
         });
-        observableAppointments = FXCollections.observableArrayList(getAppointmentsForTheMonth());
+        List<AppointmentModel> appointmentsForTheMonth = getAppointmentsForTheMonth();
+        if (appointmentsForTheMonth != null) {
+            observableAppointments = FXCollections.observableArrayList(appointmentsForTheMonth);
+        }
         this.appointmentTable.setItems(observableAppointments);
         this.appointmentIdCol.setCellValueFactory(new PropertyValueFactory("id"));
         this.appointmentTitleCol.setCellValueFactory(new PropertyValueFactory("title"));
@@ -89,17 +90,25 @@ public class Appointment implements Initializable {
 
     private List<AppointmentModel> getAppointmentsForTheMonth() {
         //  Chose to use a lambda expression here to quickly filter appointments instead of a traditional loop seems more readable.
-        return Store.getAppointments().stream()
+        List<AppointmentModel> appointments = Store.getAppointments();
+        if (appointments == null) {
+            return new ArrayList<>();
+        }
+        return appointments.stream()
                 .filter(appointment -> appointment.getStartDate().getMonth() == LocalDate.now().getMonth())
                 .collect(Collectors.toList());
     }
 
     private List<AppointmentModel> getAppointmentsForTheWeek() {
+        List<AppointmentModel> appointments = Store.getAppointments();
+        if (appointments == null) {
+            return new ArrayList<>();
+        }
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.WEEK_OF_MONTH, 1);
         ZonedDateTime aWeekFromToday = ZonedDateTime.from(calendar.toInstant().atZone(ZoneId.systemDefault()));
         //  Chose to use a lambda expression here to quickly filter appointments instead of a traditional loop seems more readable.
-        return Store.getAppointments().stream()
+        return appointments.stream()
                 .filter(appointment -> appointment.getStartDate().isBefore(ChronoZonedDateTime.from(aWeekFromToday)) && appointment.getStartDate().isAfter(ZonedDateTime.now()))
                 .collect(Collectors.toList());
     }
