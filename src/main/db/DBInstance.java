@@ -55,7 +55,9 @@ public class DBInstance {
 
         try {
             Statement stmt = conn.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT * FROM " + table + ";");
+            String statement = "SELECT * FROM " + table + ";";
+            System.out.println("Executing: " + statement);
+            ResultSet rs = stmt.executeQuery(statement);
             if (rs.next()) {
                 resultList = this.convertsResultToMap(rs);
             }
@@ -70,7 +72,25 @@ public class DBInstance {
         List<HashMap> resultList = null;
         try {
             Statement stmt = conn.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT * FROM " + table + " WHERE " + filterLabel + "='" + filterValue + "';");
+            String statement = "SELECT * FROM " + table + " WHERE " + filterLabel + "='" + filterValue + "';";
+            System.out.println("Executing: " + statement);
+            ResultSet rs = stmt.executeQuery(statement);
+            if (rs.next() != false) {
+                resultList = convertsResultToMap(rs);
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return resultList;
+    }
+
+    public List<HashMap> selectAndFilterByAuthUser(Connection conn, String table, int userId) {
+        List<HashMap> resultList = null;
+        try {
+            Statement stmt = conn.createStatement();
+            String statement = "SELECT * FROM " + table + " WHERE userId =" + userId + ";";
+            System.out.println("Executing: " + statement);
+            ResultSet rs = stmt.executeQuery(statement);
             if (rs.next() != false) {
                 resultList = convertsResultToMap(rs);
             }

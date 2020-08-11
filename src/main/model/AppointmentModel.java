@@ -3,8 +3,6 @@ package main.model;
 import main.db.Store;
 import main.util.DateUtils;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.Calendar;
@@ -21,6 +19,7 @@ public class AppointmentModel {
     private ZonedDateTime end;
     private int customerId;
     private int userId;
+    private UserModel user;
 
     public AppointmentModel(int id, String title, String description, String location, String contact, String type, String url, ZonedDateTime start, ZonedDateTime end, int customerId, int userId) {
         this.id = id;
@@ -34,6 +33,11 @@ public class AppointmentModel {
         this.end = end;
         this.customerId = customerId;
         this.userId = userId;
+        this.user = Store.getUsers().stream().filter(user -> user.getId() == userId).findFirst().get();
+    }
+
+    public UserModel getUser() {
+        return user;
     }
 
     public int getId() {

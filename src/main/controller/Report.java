@@ -1,5 +1,6 @@
 package main.controller;
 
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -10,6 +11,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import main.Main;
 import main.db.Store;
 import main.model.AppointmentModel;
+import main.model.UserModel;
 
 import java.net.URL;
 import java.time.format.TextStyle;
@@ -20,8 +22,8 @@ import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
 public class Report implements Initializable {
-    final List<String> months = Arrays. asList("January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December");
-    final List<String> typesList = Store.getAppointments().stream().map(appointment -> appointment.getType()).collect(Collectors.toList());
+    final List<String> months = Arrays.asList("January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December");
+    final List<String> typesList = Store.getAllAppointmentTypes();
 
     @FXML
     private ComboBox typesComboBox;
@@ -38,42 +40,55 @@ public class Report implements Initializable {
     @FXML
     private TableView consultantReportTable;
     @FXML
-    private TableColumn consultantReportUserCol;
+    private TableColumn<UserModel, String> consultantReportUserCol;
     @FXML
-    private TableColumn consultantReportAppointmentCol;
+    private TableColumn<UserModel, Integer>consultantReportAppointmentCol;
 
     @FXML
-    private TableView cityReportTable;
+    private TableView<String> cityReportTable;
     @FXML
-    private TableColumn cityReportTableCustomerCol;
+    private TableColumn<Object, Integer> cityReportTableCustomerCol;
     @FXML
-    private TableColumn cityReportTableCityCol;
+    private TableColumn<Object, String> cityReportTableCityCol;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        typesComboBox.getItems().addAll(typesList);
+        if (typesList != null) {
+            typesComboBox.getItems().addAll(typesList);
+        }
         monthComboBox.getItems().addAll(months);
         this.generateCustomerReportByCity();
     }
 
     public void generateAppointmentReportByUser() {
-        List<String> customerCities = Store.getCustomers().stream()
-                .map(appointment -> appointment.getCityName())
-                .collect(Collectors.toList());
-        ObservableList<String> observableCities = FXCollections.observableArrayList(customerCities);
-        this.consultantReportTable.setItems(observableCities);
-        this.consultantReportUserCol.setCellValueFactory(new PropertyValueFactory("id"));
-        this.consultantReportAppointmentCol.setCellValueFactory(new PropertyValueFactory("name"));
+        List<UserModel> users = Store.getUsers();
+        ObservableList<UserModel> observableUsers = FXCollections.observableArrayList(users);
+        this.consultantReportTable.setItems(observableUsers);
+        this.consultantReportUserCol.setCellValueFactory(new PropertyValueFactory("username"));
+        this.consultantReportAppointmentCol.setCellValueFactory(user -> {
+            List<UserModel> newUsersList = Store.getUsers();
+            ObservableList<UserModel> newObservableUsersList = FXCollections.observableArrayList(newUsersList);
+            FXCollections.copy(observableUsers, newObservableUsersList);
+            this.consultantReportTable.setItems(newObservableUsersList);
+            return new SimpleIntegerProperty(
+                            user.getValue().allAppointmentCountByMonth(user.getValue().getId(), monthComboBox.getValue().toString())
+                    ).asObject();
+                }
+        );
     }
 
     public void generateCustomerReportByCity() {
         List<String> customerCities = Store.getCustomers().stream()
                 .map(appointment -> appointment.getCityName())
+                .distinct()
                 .collect(Collectors.toList());
         ObservableList<String> observableCities = FXCollections.observableArrayList(customerCities);
         this.cityReportTable.setItems(observableCities);
-        this.cityReportTableCustomerCol.setCellValueFactory(month -> new SimpleStringProperty(month.toString()));
-        this.cityReportTableCityCol.setCellValueFactory(new PropertyValueFactory("name"));
+        this.cityReportTableCustomerCol.setCellValueFactory(city -> new SimpleIntegerProperty((int) Store.getCustomers().stream()
+                .filter(customer -> customer.getCityName().equals(city.getValue())).count()
+            ).asObject()
+        );
+        this.cityReportTableCityCol.setCellValueFactory(city -> new SimpleStringProperty((String) city.getValue()));
     }
 
     public void generateAppointmentByType() {
@@ -84,11 +99,10 @@ public class Report implements Initializable {
         ObservableList<String> observableMonths = FXCollections.observableArrayList(months);
         this.appointmentReportTable.setItems(observableMonths);
         this.appointmentReportMonthCol.setCellValueFactory(month -> new SimpleStringProperty((String) month.getValue()));
-        this.appointmentReportAmountCol.setCellValueFactory(month ->  new SimpleStringProperty(Long.toString(filteredAppointments.stream()
-                .filter(appointment -> {
-                    return appointment.getStartDate().getMonth().getDisplayName(TextStyle.FULL, Locale.US).equals(month.getValue());
-                })
-                .count()
+        this.appointmentReportAmountCol.setCellValueFactory(month ->  new SimpleStringProperty(Long.toString(
+                filteredAppointments.stream()
+                    .filter(appointment -> appointment.getStartDate().getMonth().getDisplayName(TextStyle.FULL, Locale.US).equals(month.getValue()))
+                    .count()
                 )
             )
         );
