@@ -42,14 +42,11 @@ public class AppointmentAdd implements Initializable {
     @FXML
     private ChoiceBox startPeriodChoiceBox;
     @FXML
-    private DatePicker endDatePicker;
-    @FXML
     private TextInputControl endHourInput;
     @FXML
     private TextInputControl endMinInput;
     @FXML
     private ChoiceBox endPeriodChoiceBox;
-
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -72,16 +69,23 @@ public class AppointmentAdd implements Initializable {
         LocalDate startDate = startDatePicker.getValue();
         int startHour = Integer.parseInt(startHourInput.getText());
         int startMin = Integer.parseInt(startMinInput.getText());
-        LocalDate endDate = endDatePicker.getValue();
         int endHour = Integer.parseInt(endHourInput.getText());
         int endMin = Integer.parseInt(endMinInput.getText());
+        int startHour24 = startPeriodChoiceBox.getValue().equals("AM") ? startHour :  startHour + 12;
+        int endHour24 = endPeriodChoiceBox.getValue().equals("AM") ? endHour :  endHour + 12;
 
-        if (!validForm(title, description, type, url, location, startDate, endDate)) {
+        if (startDate == null) {
+            Alert alert = new Alert(Alert.AlertType.ERROR, "Please Enter a Start Date");
+            alert.show();
             return;
         }
 
-        LocalDateTime startDateTime = startDate.atTime(startHour, startMin);
-        LocalDateTime endDateTime = endDate.atTime(endHour, endMin);
+        LocalDateTime startDateTime = startDate.atTime(startHour24, startMin);
+        LocalDateTime endDateTime = startDate.atTime(endHour24, endMin);
+
+        if (!validForm(title, description, type, url, location, startDateTime, endDateTime)) {
+            return;
+        }
 
         UserModel user = Authenticate.user;
         DBAppointment.create(title, description, type, url, location, customer, startDateTime, endDateTime, user);
@@ -89,7 +93,7 @@ public class AppointmentAdd implements Initializable {
         goBack();
     }
 
-    private boolean validForm(String title, String description, String type, String url, String location, LocalDate startDate, LocalDate endDate) {
+    private boolean validForm(String title, String description, String type, String url, String location, LocalDateTime startDate, LocalDateTime endDate) {
         Alert alert = null;
         if (title == null || title.equals("")) {
             alert = new Alert(Alert.AlertType.ERROR, "Please Enter a Title");
@@ -106,12 +110,17 @@ public class AppointmentAdd implements Initializable {
         if (location == null || location.equals("")) {
             alert = new Alert(Alert.AlertType.ERROR, "Please Enter a Location");
         }
-        if (startDate == null) {
-            alert = new Alert(Alert.AlertType.ERROR, "Please Enter a Start Date");
+
+        if(startDate.getHour() > endDate.getHour()) {
+            alert = new Alert(Alert.AlertType.ERROR, "Start Time must be before End Time");
         }
-        if (endDate == null) {
-            alert = new Alert(Alert.AlertType.ERROR, "Please Enter a End Date");
+        if (startDate.getHour() < 8) {
+            alert = new Alert(Alert.AlertType.ERROR, "Start Time must be during normal business hours, Schedule your start time after 8AM");
         }
+        if ((endDate.getHour() == 17 && endDate.getMinute() > 0) || endDate.getHour() > 17) {
+            alert = new Alert(Alert.AlertType.ERROR, "End Time must be during normal business hours, Schedule your end time before 5PM");
+        }
+
         if (alert != null) {
             alert.show();
             return false;
