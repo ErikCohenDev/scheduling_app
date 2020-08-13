@@ -103,7 +103,7 @@ abstract public class DBAppointment {
                 "type = '" + type +"', " +
                 "url = '" + url +"', " +
                 "location = '" + location +"', " +
-                "contact = '" + customer +"', " +
+                "contact = '" + customer.getPhone() +"', " +
                 "customerId = " + customer.getId() +", " +
                 "start = '" + UTCStartDateTime +"', " +
                 "end = '" + UTCEndDateTime +"', " +

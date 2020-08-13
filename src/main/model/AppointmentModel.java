@@ -3,8 +3,10 @@ package main.model;
 import main.db.Store;
 import main.util.DateUtils;
 
+import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.Calendar;
 
 public class AppointmentModel {
@@ -113,10 +115,15 @@ public class AppointmentModel {
     }
 
     public boolean isWithin15Mins() {
-        ZonedDateTime now = ZonedDateTime.now();
-        Calendar calendar = Calendar.getInstance();
-        calendar.add(Calendar.MINUTE, 15);
-        ZonedDateTime min15FromNow = ZonedDateTime.from(calendar.toInstant().atZone(ZoneId.systemDefault()));
-        return this.start.isAfter(now) && this.start.isBefore(min15FromNow);// (now);
+        // Appointment has passed already or appointment is not today
+        if (this.start.isBefore(ZonedDateTime.now())) return false;
+        if (!DateUtils.isToday(this.start)) return false;
+
+        ZonedDateTime min15FromNow = ZonedDateTime.now().plus(15, ChronoUnit.MINUTES);
+        return this.start.isBefore(min15FromNow);
+    }
+
+    public boolean isToday() {
+        return DateUtils.isToday(this.start);
     }
 }

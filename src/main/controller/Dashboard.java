@@ -8,10 +8,10 @@ import main.Main;
 import main.db.Authenticate;
 import main.db.Store;
 import main.model.AppointmentModel;
-import main.util.DateUtils;
 
 import java.net.URL;
-import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class Dashboard implements Initializable {
@@ -23,18 +23,14 @@ public class Dashboard implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         notificationBox.setVisible(false);
-
+        Store.refreshAppointments();
         //Chose to use a lambda expression here to quickly get the next appointment instead of creating an encapsulating class
         if (Store.getAppointments() != null) {
-            AppointmentModel nextAppointment = Store.getAppointments().stream().reduce((prev, next) -> {
-                if (next.getStartDate().isBefore(prev.getStartDate()) && next.getStartDate().isAfter(ZonedDateTime.now())) {
-                    return next;
-                }
-                return prev;
-            }).get();
+            Optional<AppointmentModel> nextAppointmentOptional = Store.getAppointments().stream().filter(appointment -> appointment.isWithin15Mins()).findFirst();
 
-            if (nextAppointment != null && nextAppointment.isWithin15Mins()) {
-                String startTime = DateUtils.getTimeStringFromZonedTime(nextAppointment.getStartDate());
+            if (nextAppointmentOptional.isPresent()) {
+                AppointmentModel nextAppointment = nextAppointmentOptional.get();
+                String startTime = nextAppointment.getStartDate().format(DateTimeFormatter.ofPattern("hh:mm a"));
                 String customer = nextAppointment.getContactObject().getName();
                 notificationLabel.setText("You have an upcoming appointment with " + customer + " at " + startTime);
                 notificationBox.setVisible(true);

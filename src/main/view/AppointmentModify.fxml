@@ -28,7 +28,7 @@
         <TextField fx:id="startMinInput" layoutX="314.0" layoutY="354.0" prefHeight="27.0" prefWidth="44.0" />
         <Label layoutX="201.0" layoutY="359.0" text="Hour" />
         <Label layoutX="285.0" layoutY="359.0" text="Min" />
-        <Label layoutX="530.0" layoutY="277.0" prefHeight="17.0" prefWidth="69.0" text="Start" />
+        <Label layoutX="530.0" layoutY="277.0" prefHeight="17.0" prefWidth="69.0" text="Date" />
         <TextField fx:id="endHourInput" layoutX="564.0" layoutY="354.0" prefHeight="27.0" prefWidth="44.0" />
         <TextField fx:id="endMinInput" layoutX="642.0" layoutY="354.0" prefHeight="27.0" prefWidth="44.0" />
         <Label layoutX="529.0" layoutY="360.0" text="Hour" />
@@ -36,5 +36,7 @@
         <ChoiceBox fx:id="startPeriodChoiceBox" layoutX="369.0" layoutY="354.0" prefHeight="28.0" prefWidth="87.0" />
         <ChoiceBox fx:id="endPeriodChoiceBox" layoutX="697.0" layoutY="354.0" prefHeight="28.0" prefWidth="87.0" />
         <ChoiceBox fx:id="customerChoiceBox" layoutX="201.0" layoutY="178.0" prefHeight="28.0" prefWidth="598.0" />
+      <Label layoutX="202.0" layoutY="332.0" prefHeight="17.0" prefWidth="69.0" text="Start Time" />
+      <Label layoutX="529.0" layoutY="332.0" prefHeight="17.0" prefWidth="69.0" text="End Time" />
     </children>
 </AnchorPane>

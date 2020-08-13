@@ -15,11 +15,15 @@ import main.db.Store;
 import main.model.AppointmentModel;
 import main.model.CustomerModel;
 import main.model.UserModel;
+import main.util.DateUtils;
 
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.ResourceBundle;
+import java.util.stream.Collectors;
 
 public class AppointmentModify implements Initializable {
     ObservableList<CustomerModel> customerList = FXCollections.observableArrayList();
@@ -102,8 +106,8 @@ public class AppointmentModify implements Initializable {
         int startMin = Integer.parseInt(startMinInput.getText());
         int endHour = Integer.parseInt(endHourInput.getText());
         int endMin = Integer.parseInt(endMinInput.getText());
-        int startHour24 = startPeriodChoiceBox.getValue().equals("AM") ? startHour :  startHour + 12;
-        int endHour24 = endPeriodChoiceBox.getValue().equals("AM") ? endHour :  endHour + 12;
+        int startHour24 = startPeriodChoiceBox.getValue().equals("AM") || startHour == 12 ? startHour :  startHour + 12;
+        int endHour24 = endPeriodChoiceBox.getValue().equals("AM") || endHour == 12 ? endHour :  endHour + 12;
 
         if (startDate == null) {
             Alert alert = new Alert(Alert.AlertType.ERROR, "Please Enter a Start Date");
@@ -151,6 +155,23 @@ public class AppointmentModify implements Initializable {
         }
         if ((endDate.getHour() == 17 && endDate.getMinute() > 0) || endDate.getHour() > 17) {
             alert = new Alert(Alert.AlertType.ERROR, "End Time must be during normal business hours, Schedule your end time before 5PM");
+        }
+
+        List<AppointmentModel> conflictingAppointments = Store.getAppointments().stream()
+                .filter(existingAppointment -> DateUtils.isOverlapping(
+                        existingAppointment.getStartDate().toLocalDateTime(),
+                        existingAppointment.getEndDate().toLocalDateTime(),
+                        startDate,
+                        endDate
+                ) && existingAppointment.getId() != appointment.getId()).collect(Collectors.toList());
+
+        if (!conflictingAppointments.isEmpty()) {
+            alert = new Alert(Alert.AlertType.ERROR,
+         "There is a conflict with another appointment. \n " +
+                    "Which starts at "  + conflictingAppointments.get(0).getStartDate().format(DateTimeFormatter.ofPattern("hh:mm a"))  +
+                    " and ends at " + conflictingAppointments.get(0).getEndDate().format(DateTimeFormatter.ofPattern("hh:mm a")) + "\n" +
+                    "Please make your appointment is during a time no other appointments are scheduled."
+            );
         }
 
         if (alert != null) {
