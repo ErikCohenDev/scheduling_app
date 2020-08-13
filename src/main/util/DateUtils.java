@@ -1,5 +1,6 @@
 package main.util;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
@@ -30,11 +31,20 @@ public class DateUtils {
         return DbFormat.format(ZonedDateTime.now().withZoneSameInstant(UTC_ZONE));
     }
 
+    public static boolean isToday(ZonedDateTime date) {
+        LocalDate today = LocalDate.now();
+        return date.toLocalDate().isEqual(today);
+    }
+
     public static String getLocalStringNow() {
         return localFormat.format(ZonedDateTime.now().withZoneSameInstant(LOCAL_ZONE));
     }
 
     public static String getTimeStringFromZonedTime(ZonedDateTime dateTime) {
         return timeformatter.format(dateTime.withZoneSameInstant(LOCAL_ZONE));
+    }
+
+    public static boolean isOverlapping(LocalDateTime start1, LocalDateTime end1, LocalDateTime start2, LocalDateTime end2) {
+        return ( start1.isBefore( end2 ) ) && ( end1.isAfter( start2 ) );
     }
 }

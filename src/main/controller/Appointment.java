@@ -54,6 +54,7 @@ public class Appointment implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        Store.refreshAppointments();
         final ToggleGroup group = new ToggleGroup();
         byMonthRadio.setToggleGroup(group);
         byWeekRadio.setToggleGroup(group);

@@ -2,6 +2,7 @@ package main.controller;
 
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextInputControl;
@@ -17,6 +18,16 @@ import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ResourceBundle;
+
+class CustomerModifyInvalidFormException extends Exception
+{
+    public CustomerModifyInvalidFormException(String message)
+    {
+        super(message);
+        Alert alert = new Alert(Alert.AlertType.ERROR, message);
+        alert.show();
+    }
+}
 
 public class CustomerModify implements Initializable {
     @FXML
@@ -67,6 +78,12 @@ public class CustomerModify implements Initializable {
         String country = countryInput.getText();
         boolean active = activeCheckbox.isSelected();
 
+        try {
+            this.validateForm(name, phone, address, city, zip, country);
+        } catch(CustomerModifyInvalidFormException e){
+            return;
+        }
+
         CustomerModel customer = Store.getCustomers().stream()
                 .filter(cust -> cust.getId() == customerId).findFirst().get();
 
@@ -108,6 +125,27 @@ public class CustomerModify implements Initializable {
         }
         Store.refreshCustomer();
         Main.goToCustomer();
+    }
+
+    private void validateForm(String name, String phone, String address, String city, String zip, String country) throws CustomerModifyInvalidFormException {
+        if (name == null || name.trim().equals("")) {
+            throw new CustomerModifyInvalidFormException("Name is a required field");
+        }
+        if (phone == null || phone.trim().equals("")) {
+            throw new CustomerModifyInvalidFormException("Phone is a required field");
+        }
+        if (address == null || address.trim().equals("")) {
+            throw new CustomerModifyInvalidFormException("Address is a required field");
+        }
+        if (city == null || city.trim().equals("")) {
+            throw new CustomerModifyInvalidFormException("City is a required field");
+        }
+        if (zip == null || zip.trim().equals("")) {
+            throw new CustomerModifyInvalidFormException("Zip is a required field");
+        }
+        if (country == null || country.trim().equals("")) {
+            throw new CustomerModifyInvalidFormException("Country is a required field");
+        }
     }
 
     public void goBack() throws Exception {
